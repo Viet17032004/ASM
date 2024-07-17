@@ -26,6 +26,9 @@ class DanhMuc extends Model
     'mo_ta' => $data['mo_ta'],
         ]);
     }
-   
+   public function getDanhMuc($id){
+    $tb_danh_muc = DB::table('tb_danh_muc')->where('id',$id)->first();
+    return $tb_danh_muc;
+   }
 
 }

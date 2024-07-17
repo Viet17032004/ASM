@@ -80,7 +80,19 @@ return redirect()->route('taikhoan.index');
      */
     public function edit(string $id)
     {
-        //
+        $title = "Chỉnh sửa sản Phẩm";
+        //Lấy thông tin chi tiết
+        //Sử dụng quyry buider
+        $TaiKhoan = $this->tb_tai_khoan->find($id);
+        
+        //Sử dụng Eloquent
+        // $TaiKhoan = TaiKhoan::findOrFail($id);
+        $tb_chuc_vu = DB::table('tb_chuc_vu')->get();
+        if(!$TaiKhoan){
+            return redirect()->route('taikhoan.index')->with('error','sản phẩm ko tồn tại');
+            
+        }
+        return view('admins.taikhoan.update', compact('title','TaiKhoan','tb_chuc_vu'));
     }
 
     /**

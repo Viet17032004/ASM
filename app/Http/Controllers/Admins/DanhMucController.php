@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admins;
 use App\Http\Controllers\Controller;
 use App\Models\DanhMuc;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DanhMucController extends Controller
 {
@@ -68,6 +69,19 @@ class DanhMucController extends Controller
     public function edit(string $id)
     {
         //
+        $title = "Chỉnh sửa sản Phẩm";
+        //Lấy thông tin chi tiết
+        //Sử dụng quyry buider
+        $DanhMuc = $this->tb_danh_muc->getDanhMuc($id);
+        
+        //Sử dụng Eloquent
+        // $TaiKhoan = TaiKhoan::findOrFail($id);
+       
+        if(!$DanhMuc){
+            return redirect()->route('danhmuc.index')->with('error','sản phẩm ko tồn tại');
+            
+        }
+        return view('admins.danhmuc.update', compact('title','DanhMuc'));
     }
 
     /**

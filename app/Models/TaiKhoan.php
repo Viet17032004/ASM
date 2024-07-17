@@ -38,4 +38,10 @@ public function createTaiKhoan($data)
         ]);
             
     }
+public function getUser($id){
+    $tb_tai_khoan = DB::table('tb_tai_khoan')->where('id',$id)->first();
+    return $tb_tai_khoan;
+}
+
+
 }
