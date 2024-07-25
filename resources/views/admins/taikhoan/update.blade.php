@@ -19,9 +19,10 @@
     <div class="card">
         <h4 class="card-header">Thêm tài khoản</h4>
         <div class="card-body">
-          <form action="{{ route('taikhoan.store') }}" method="POST" enctype="multipart/form-data">
+          <form action="{{ route('taikhoan.update',$TaiKhoan->id) }}" method="POST" enctype="multipart/form-data">
             {{-- 1 cơ chế bảo mật của laravel --}}
             @csrf
+            @method('PUT')
             <div class="mb-3">
                 <label for="" class="form-label">Tên Tài Khoản:</label>
                 <input type="text" class="form-control" value="{{$TaiKhoan->ho_ten}}" name="ho_ten">
@@ -71,7 +72,7 @@
                 <label for="" class="form-label">Danh mục:</label>
                 <select class="form-select" name="chuc_vu_id">
                     @foreach ($tb_chuc_vu as $item)
-                        <option value="{{ $item->id }}">{{ $item->ten_chuc_vu }}</option>
+                        <option {{$item->id == $TaiKhoan->chuc_vu_id ? 'selected' : ''}} value="{{ $item->id }}">{{ $item->ten_chuc_vu }}</option>
                     @endforeach
                 </select>
             </div>

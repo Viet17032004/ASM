@@ -22,7 +22,7 @@ class AdminController extends Controller
         // Đếm số lượng người dùng
         $userCount = $users->count();
         $sanphammax = $sanphamm->count();
-        $donhangmax = $donhangg->count();
+        $donhangmax = $donhangg->count(); 
 
 
         return view('admins.admin.index', compact('users', 'userCount',
@@ -31,4 +31,10 @@ class AdminController extends Controller
     
     ));
     }
+    public function __construct()
+    {
+        // $this->middleware('auth');
+        
+    }
+
 }

@@ -65,6 +65,14 @@
                     @endforeach
                 </select>
             </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Trạng thái:</label>
+                <select name="trang_thai" class="form-select">
+                    <option selected>Chọn trạng thái</option>
+                    <option value="0" >Ẩn</option>
+                    <option value="1" >Hiển thị</option>
+                </select>
+            </div>
             <div class="mb-3 d-flex justify-content-center">
                 <button type="submit" class="btn btn-success">Thêm mới</button>
             </div>

@@ -34,7 +34,7 @@
                     @foreach ($tb_binh_luan as $index => $item)
                         <tr>
                             <td>{{ $index + 1 }}</td>
-                            <td>{{ $item->TaiKhoans->ho_ten }}</td>
+                            <td>{{ $item->tai_khoan_id }}</td>
                             <td>{{ $item->SanPhams->ten_san_pham }}</td>
                             <td>{{ $item->noi_dung }}</td>
                             <td>{{ $item->thoi_gian }}</td>

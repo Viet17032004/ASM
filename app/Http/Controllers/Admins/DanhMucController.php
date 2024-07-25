@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admins;
 
-use App\Http\Controllers\Controller;
 use App\Models\DanhMuc;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class DanhMucController extends Controller
 {
@@ -90,6 +91,29 @@ class DanhMucController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        if ($request->isMethod('PUT')) {
+
+            $params = $request->except('_token', '_method');
+            $DanhMuc = DanhMuc::findOrFail($id);
+            //Xử lý Hình Ảnh
+            if ($request->hasFile('img_danh_muc')) {
+                //Nếu có đẩy hỉnh ảnh thì sẽ xóa hình cũ Thêm hình mới 
+                if ($DanhMuc->hinh_anh) {
+                    Storage::disk('public')->delete($DanhMuc->hinh_anh);
+                }
+                $params['hinh_anh'] = $request->file('img_danh_muc')->store('uploads/danhmuc', 'public');
+            } else {
+                //Nếu không có hình ảnh sẽ lấy lại hình ảnh cũ 
+                $params['hinh_anh'] = $DanhMuc->hinh_anh;
+            }
+            //Cập nhật dữ liệu
+            //Eloquent
+            $DanhMuc->update($params);
+            return redirect()->route('danhmuc.index')->with('sucess', 'Cập nhật  sản phẩm thành công?');
+            // 
+
+        }
+
     }
 
     /**
@@ -98,5 +122,6 @@ class DanhMucController extends Controller
     public function destroy(string $id)
     {
         //
+        
     }
 }

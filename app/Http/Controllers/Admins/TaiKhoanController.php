@@ -6,6 +6,7 @@ use App\Models\TaiKhoan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class TaiKhoanController extends Controller
 {
@@ -21,7 +22,7 @@ class TaiKhoanController extends Controller
      */
     public function index()
     {
-        $listTaiKhoan = $this->tb_tai_khoan->getAll();
+        $listTaiKhoan = TaiKhoan::all();
         return view('admins.taikhoan.index', ['tb_tai_khoan' => $listTaiKhoan]);
         //
 
@@ -61,6 +62,7 @@ $dataInsert = [
     'ngay_sinh' => $request->ngay_sinh,
     'mat_khau' => $request->mat_khau,
     'chuc_vu_id' => $request->chuc_vu_id,
+    'trang_thai'=>$request->trang_thai,
 ];
 //dd($dataInsert);
 $this->tb_tai_khoan->createTaiKhoan($dataInsert);
@@ -100,14 +102,49 @@ return redirect()->route('taikhoan.index');
      */
     public function update(Request $request, string $id)
     {
+          //
+          if ($request->isMethod('PUT')) {
+
+            $params = $request->except('_token', '_method');
+            $TaiKhoan = TaiKhoan::findOrFail($id);
+            //Xử lý Hình Ảnh
+            if ($request->hasFile('anh_dai_dien')) {
+                //Nếu có đẩy hỉnh ảnh thì sẽ xóa hình cũ Thêm hình mới 
+                if ($TaiKhoan->anh_dai_dien) {
+                    Storage::disk('public')->delete($TaiKhoan->anh_dai_dien);
+                }
+                $params['anh_dai_dien'] = $request->file('anh_dai_dien')->store('uploads/taikhoan', 'public');
+            } else {
+                //Nếu không có hình ảnh sẽ lấy lại hình ảnh cũ 
+                $params['anh_dai_dien'] = $TaiKhoan->anh_dai_dien;
+            }
+            //Cập nhật dữ liệu
+            //Eloquent
+            $TaiKhoan->update($params);
+            return redirect()->route('taikhoan.index')->with('sucess', 'Cập nhật  sản phẩm thành công?');
+            // 
+
+        }
+
         //
+
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
-        //
+        if ($request->isMethod('DELETE')) {
+            $TaiKhoan = TaiKhoan::findOrFail($id);
+
+            if ($TaiKhoan) {
+                $TaiKhoan->delete();
+                return redirect()->route('taikhoan.index')->with('sucess', 'Xóa sản phẩm thành công?');
+            }
+            return redirect()->route('khach_hang.index')->with('error', 'Không có sản phẩm');
+        }
+
     }
 }

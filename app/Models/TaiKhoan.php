@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TaiKhoan extends Model
@@ -12,16 +13,16 @@ class TaiKhoan extends Model
     use HasFactory;
     protected $table = 'tb_tai_khoan';
       //Cách 1 : Sử dụng Query Buider
-    public function getAll()
-    {
-        $tb_tai_khoan = DB::table('tb_tai_khoan')
-            ->join('tb_chuc_vu', 'tb_tai_khoan.chuc_vu_id', '=', 'tb_chuc_vu.id')
-            ->select('tb_tai_khoan.*', 'tb_chuc_vu.ten_chuc_vu')
-            ->orderBy('tb_tai_khoan.id', 'DESC')
-            ->get();
+    // public function getAll()
+    // {
+    //     $tb_tai_khoan = DB::table('tb_tai_khoan')
+    //         ->join('tb_chuc_vu', 'tb_tai_khoan.chuc_vu_id', '=', 'tb_chuc_vu.id')
+    //         ->select('tb_tai_khoan.*', 'tb_chuc_vu.ten_chuc_vu')
+    //         ->orderBy('tb_tai_khoan.id', 'DESC')
+    //         ->get();
 
-        return $tb_tai_khoan;
-    }
+    //     return $tb_tai_khoan;
+    // }
 //Xử lý thêm sản phẩm 
 public function createTaiKhoan($data)
     {
@@ -35,6 +36,7 @@ public function createTaiKhoan($data)
     'ngay_sinh' => $data['ngay_sinh'],
     'mat_khau' => $data['mat_khau'],
     'chuc_vu_id' => $data['chuc_vu_id'],
+    'trang_thai' => $data['trang_thai'],
         ]);
             
     }
@@ -42,6 +44,25 @@ public function getUser($id){
     $tb_tai_khoan = DB::table('tb_tai_khoan')->where('id',$id)->first();
     return $tb_tai_khoan;
 }
+public function updateUser($id,$data) {
+    DB::table('tb_tai_khoan')->where('id',$id)->update($data);
+}
+public function deleteUser($id)
+    {
+        DB::table('tb_tai_khoan')->where('id',$id)->delete();
+    }
+    use SoftDeletes;
+protected $fillable = [
+    'anh_dai_dien',
+    'ho_ten',
+    'email',
+    'so_dien_thoai',
+    'gioi_tinh',
+    'dia_chi',
+    'ngay_sinh',
+    'mat_khau',
+    'chuc_vu_id',
+    'trang_thai',
 
-
+];
 }

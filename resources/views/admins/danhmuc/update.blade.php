@@ -18,14 +18,15 @@
 
 <div class="container">
     <div class="card">
-        <h4 class="card-header">Thêm tài khoản</h4>
+        <h4 class="card-header">Sửa tài khoản</h4>
         <div class="card-body">
-          <form action="{{ route('danhmuc.store') }}" method="POST" enctype="multipart/form-data">
+          <form action="{{ route('danhmuc.update',$DanhMuc->id) }}" method="POST" enctype="multipart/form-data">
             {{-- 1 cơ chế bảo mật của laravel --}}
             @csrf
+            @method('PUT')
             <div class="mb-3">
               <label for="" class="form-label">Ảnh Tài Khoản:</label>
-              <input type="file" class="form-control" name="hinh_anh" 
+              <input type="file" class="form-control" name="img_danh_muc" 
                   onchange="showImage(event)">
           </div>
 
